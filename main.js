@@ -32,6 +32,7 @@ app.get('/', (req, res) => {
         rel: 'products',
         type: 'GET',
       },
+      // Add more links if needed
     ],
   });
 });
