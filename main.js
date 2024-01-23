@@ -1,9 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const products = require('./routes/products');
+const path = require('path');
+const productsRouter = require('./routes/products');
+
+// Import the products array
+const productsData = require('./data/products');
+const products = [...productsData];
 
 const app = express();
 const port = 3000;
+
+// Set up EJS as the view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Parsing Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -21,20 +30,16 @@ app.use((req, res, next) => {
 });
 
 // Use the Products route
-app.use('/api/products', products);
+app.use('/products', productsRouter);
 
-// Adding some HATEOAS links.
+// Rendering HTML using EJS for the main page
 app.get('/', (req, res) => {
-  res.json({
-    links: [
-      {
-        href: '/api/products',
-        rel: 'products',
-        type: 'GET',
-      },
-      // Add more links if needed
-    ],
-  });
+  res.render('index', { products });
+});
+
+// Rendering HTML using EJS for the products list page
+app.get('/products', (req, res) => {
+  res.render('products', { products });
 });
 
 // 404 Middleware
@@ -46,3 +51,4 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}.`);
 });
+

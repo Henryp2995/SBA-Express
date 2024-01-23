@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-
 const productsData = require('../data/products');
 const error = require('../utilities/error');
 
@@ -8,9 +7,9 @@ const error = require('../utilities/error');
 let products = [...productsData];
 
 router
-  .route('/')  // Use / for the main list
+  .route('/products') // Use /products for the main list
   .get((req, res) => {
-    res.json({ products });
+    res.render('index', { products });
   })
   .post((req, res, next) => {
     if (req.body.product && req.body.description && req.body.price) {
@@ -29,42 +28,23 @@ router
   });
 
 router
-  .route('/:id')  // Use /:id for individual products
+  .route('/products/:id') // Use /products/:id for individual products
   .get((req, res, next) => {
     const productId = parseInt(req.params.id);
     const product = products.find((p) => p.id === productId);
 
     if (product) {
-      res.json({ product });
+      // Render the individual product data directly on the homepage
+      res.render('index', { products: [product] });
     } else {
       next(error(404, 'Product Not Found'));
     }
   })
   .patch((req, res, next) => {
-    const productId = parseInt(req.params.id);
-    const productIndex = products.findIndex((p) => p.id === productId);
-
-    if (productIndex !== -1) {
-      // Update the product using req.body
-      for (const key in req.body) {
-        products[productIndex][key] = req.body[key];
-      }
-      res.json({ product: products[productIndex] });
-    } else {
-      next(error(404, 'Product Not Found'));
-    }
+    // Your existing code for updating a product
   })
   .delete((req, res, next) => {
-    const productId = parseInt(req.params.id);
-    const productIndex = products.findIndex((p) => p.id === productId);
-
-    if (productIndex !== -1) {
-      // Remove the product from the array
-      const deletedProduct = products.splice(productIndex, 1);
-      res.json({ deletedProduct });
-    } else {
-      next(error(404, 'Product Not Found'));
-    }
+    // Your existing code for deleting a product
   });
 
 module.exports = router;
