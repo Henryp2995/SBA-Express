@@ -1,17 +1,14 @@
-// products.js
-
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const products = require("../data/products");
-const error = require("../utilities/error");
+const products = require('../data/products');
 
 router
-  .route("/")
+  .route('/')
   .get((req, res) => {
     res.json({ products });
   })
-  .post((req, res, next) => {
+  .post((req, res) => {
     if (req.body.product && req.body.description && req.body.price) {
       const product = {
         id: products.length + 1,
@@ -23,21 +20,21 @@ router
       products.push(product);
       res.json(products[products.length - 1]);
     } else {
-      next(error(400, "Insufficient Data"));
+      res.status(400).json({ error: 'Insufficient Data' });
     }
   });
 
 router
-  .route("/:id")
-  .get((req, res, next) => {
+  .route('/:id')
+  .get((req, res) => {
     const product = products.find((p) => p.id == req.params.id);
     if (product) {
       res.json({ product });
     } else {
-      next();
+      res.status(404).json({ error: 'Product not found' });
     }
   })
-  .patch((req, res, next) => {
+  .patch((req, res) => {
     const product = products.find((p, i) => {
       if (p.id == req.params.id) {
         for (const key in req.body) {
@@ -50,16 +47,16 @@ router
     if (product) {
       res.json(product);
     } else {
-      next();
+      res.status(404).json({ error: 'Product not found' });
     }
   })
-  .delete((req, res, next) => {
+  .delete((req, res) => {
     const productIndex = products.findIndex((p) => p.id == req.params.id);
     if (productIndex !== -1) {
       const deletedProduct = products.splice(productIndex, 1);
       res.json({ deletedProduct });
     } else {
-      next();
+      res.status(404).json({ error: 'Product not found' });
     }
   });
 
