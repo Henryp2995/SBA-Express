@@ -1,3 +1,5 @@
+// products.js
+
 const express = require('express');
 const router = express.Router();
 const productsData = require('../data/products');
@@ -48,35 +50,36 @@ router
       next(error(404, 'Product Not Found'));
     }
   })
-  .patch((req, res, next) => {
-    // Retrieve the product ID from the URL parameters
+  .post((req, res, next) => {
+    // Parse the product ID from the URL parameters
     const productId = parseInt(req.params.id);
     // Find the index of the product in the array
     const productIndex = products.findIndex((p) => p.id === productId);
 
     if (productIndex !== -1) {
       // Update the product using the data from the request body
-      for (const key in req.body) {
-        products[productIndex][key] = req.body[key];
-      }
+      products[productIndex].product = req.body.product;
+      products[productIndex].description = req.body.description;
+      products[productIndex].price = req.body.price;
+
       // Respond with the updated product
-      res.json({ product: products[productIndex] });
+      res.redirect(`/products/${productId}`);
     } else {
       // If the product is not found, pass a 404 error to the next middleware
       next(error(404, 'Product Not Found'));
     }
   })
-  .delete((req, res, next) => {
-    // Retrieve the product ID from the URL parameters
+  .post((req, res, next) => {
+    // Parse the product ID from the URL parameters
     const productId = parseInt(req.params.id);
     // Find the index of the product in the array
     const productIndex = products.findIndex((p) => p.id === productId);
 
     if (productIndex !== -1) {
       // Remove the product from the array
-      const deletedProduct = products.splice(productIndex, 1);
-      // Respond with the deleted product
-      res.json({ deletedProduct });
+      products.splice(productIndex, 1);
+      // Respond with a confirmation or redirect to the main products page
+      res.redirect('/products');
     } else {
       // If the product is not found, pass a 404 error to the next middleware
       next(error(404, 'Product Not Found'));
