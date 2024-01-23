@@ -37,10 +37,19 @@ app.get('/', (req, res) => {
   res.render('index', { products });
 });
 
-// Rendering HTML using EJS for the products list page
-app.get('/products', (req, res) => {
-  res.render('products', { products });
-});
+// Rendering HTML using EJS for individual product pages
+app.get('/products/:id', (req, res, next) => {
+    const productId = parseInt(req.params.id);
+    const product = products.find((p) => p.id === productId);
+  
+    if (product) {
+      res.render('product', { product });
+    } else {
+      res.status(404).json({ error: 'Product Not Found' });
+    }
+  });
+
+  
 
 // 404 Middleware
 app.use((req, res) => {
@@ -51,4 +60,3 @@ app.use((req, res) => {
 app.listen(port, () => {
   console.log(`Server listening on port: ${port}.`);
 });
-
