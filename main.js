@@ -1,22 +1,27 @@
+// main.js
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const methodOverride = require('method-override');  // Import method-override
 const productsRouter = require('./routes/products');
+
+// Import the products array
 const productsData = require('./data/products');
 const products = [...productsData];
 
 const app = express();
 const port = 3000;
 
+// Set up EJS as the view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Set up static files (CSS)
+app.use('/styles', express.static(path.join(__dirname, 'styles')));
+
+// Parsing Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ extended: true }));
-
-// Set up method-override middleware
-app.use(methodOverride('_method'));
 
 // Logging Middleware
 app.use((req, res, next) => {
@@ -39,15 +44,15 @@ app.get('/', (req, res) => {
 
 // Rendering HTML using EJS for individual product pages
 app.get('/products/:id', (req, res, next) => {
-  const productId = parseInt(req.params.id);
-  const product = products.find((p) => p.id === productId);
-
-  if (product) {
-    res.render('product', { product });
-  } else {
-    res.status(404).json({ error: 'Product Not Found' });
-  }
-});
+    const productId = parseInt(req.params.id);
+    const product = products.find((p) => p.id === productId);
+  
+    if (product) {
+      res.render('product', { product: [product] });
+    } else {
+      res.status(404).json({ error: 'Product Not Found' });
+    }
+  });
 
 // 404 Middleware
 app.use((req, res) => {

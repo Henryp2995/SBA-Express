@@ -5,15 +5,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= product.product %></title>
+  <title><%= product[0].product %></title>
+  <link rel="stylesheet" href="/styles/styles.css">
 </head>
 <body>
-  <h1><%= product.product %></h1>
-  <p>Description: <%= product.description %></p>
-  <p>Price: <%= product.price %></p>
+  <div class="container">
+  <h1><%= product[0].product %></h1>
+  <p>Description: <%= product[0].description %></p>
+  <p>Price: <%= product[0].price %></p>
 
   <!-- Add a form for updating the product -->
-  <form action="/products/<%= product.id %>" method="POST">
+  <form action="/products/<%= product[0].id %>" method="POST">
     <input type="hidden" name="_method" value="PATCH">
     <label for="updateProduct">Update Product:</label>
     <input type="text" id="updateProduct" name="product" required>
@@ -25,11 +27,10 @@
   </form>
 
   <!-- Add a form for deleting the product -->
-  <form action="/products/<%= product.id %>" method="POST">
+  <form action="/products/<%= product[0].id %>" method="POST">
     <input type="hidden" name="_method" value="DELETE">
     <button type="submit">Delete</button>
   </form>
+</div>
 </body>
 </html>
-
-
