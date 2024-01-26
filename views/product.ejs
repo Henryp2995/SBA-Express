@@ -1,4 +1,3 @@
-<!-- product.ejs -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +13,7 @@
   <p>Description: <%= product[0].description %></p>
   <p>Price: <%= product[0].price %></p>
 
-  <!-- Add a form for updating the product -->
+  <!-- for updating the product -->
   <form action="/products/<%= product[0].id %>" method="POST">
     <input type="hidden" name="_method" value="PATCH">
     <label for="updateProduct">Update Product:</label>
@@ -26,7 +25,7 @@
     <button type="submit">Update</button>
   </form>
 
-  <!-- Add a form for deleting the product -->
+  <!--for deleting the product -->
   <form action="/products/<%= product[0].id %>" method="POST">
     <input type="hidden" name="_method" value="DELETE">
     <button type="submit">Delete</button>

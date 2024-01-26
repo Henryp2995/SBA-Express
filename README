@@ -1,0 +1,34 @@
+# Express.js Product Management App
+
+This is a simple Express.js web application for managing products. It allows you to view a list of products, see details for each product, update product information, and delete products.
+
+## Features
+
+- View a list of all products on the main page.
+- Click on individual product links to view detailed information.
+- Update product details using the provided forms.
+- Delete products through the application.
+
+## Setup
+
+Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/express-product-app.git
+------------
+Dependencies
+Express.js
+EJS (Embedded JavaScript templating)
+Body-parser
+------------
+File Structure
+/data: Contains static data for products.
+/routes: Defines the application routes.
+/styles: CSS styles for the application.
+/views: EJS templates for rendering HTML.
+main.js: The main server file.
+-------------
+Usage
+Navigate to http://localhost:3000 to view the main page.
+Click on individual product links to view detailed information.
+Use the provided forms to update or delete products.
